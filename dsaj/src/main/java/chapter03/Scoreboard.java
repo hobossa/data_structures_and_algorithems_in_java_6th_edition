@@ -12,13 +12,13 @@ public class Scoreboard {
 
     public void add(GameEntry e) {
         int newScore = e.getScore();
-        if (numEntries < board.length || newScore > board[numEntries-1].getScore()) {
-            if (numEntries<board.length) {
+        if (numEntries < board.length || newScore > board[numEntries - 1].getScore()) {
+            if (numEntries < board.length) {
                 numEntries++;
             }
-            int j = numEntries-1;
-            while (j > 0 && board[j-1].getScore() < newScore) {
-                board[j] = board[j-1];
+            int j = numEntries - 1;
+            while (j > 0 && board[j - 1].getScore() < newScore) {
+                board[j] = board[j - 1];
                 j--;
             }
             board[j] = e;
@@ -30,10 +30,10 @@ public class Scoreboard {
             throw new IndexOutOfBoundsException("Invalid index: " + i);
         }
         GameEntry temp = board[i];
-        for (int j = i; j < numEntries-1; j++) {
-            board[j] = board[j+1];
+        for (int j = i; j < numEntries - 1; j++) {
+            board[j] = board[j + 1];
         }
-        board[numEntries-1] = null;
+        board[numEntries - 1] = null;
         numEntries--;
         return temp;
     }
@@ -43,7 +43,7 @@ public class Scoreboard {
         StringBuilder bld = new StringBuilder();
         bld.append("-=* Scoreboard *=-\n");
         for (int i = 0; i < numEntries; i++) {
-            bld.append("  ").append(i).append(" ").append(board[i].toString()).append("\n");
+            bld.append("  ").append(i + 1).append(" ").append(board[i].toString()).append("\n");
         }
         return bld.toString();
     }
