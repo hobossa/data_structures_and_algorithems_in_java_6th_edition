@@ -62,4 +62,39 @@ public class SinglyLinkedList<E> {
         }
         return element;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (null == obj) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        // we have ensured that the parameter was an instance of the SinglyLinkedList
+        // class above (or an appropriate subclass), and so we can safely cast it to a
+        // SinglyLinkedList, so that we may access its instance variables size and head.
+        // There is subtlety involving the treatment of Java's generics framework. Although
+        // our SinglyLinkedList class has a declared formal type parameter <E>, we cannot
+        // detect at runtime whether the other list has a matching type. (For those interested,
+        // look online for a discussion of erasure in Java.) So we revert to using a more
+        // classic approach with nonparameterized type SinglyLinkedList at here, and
+        // nonparameterized SNode declarations. If the two lists have incompatible types,
+        // this will be detected when calling the equals method on corresponding elements.
+
+        SinglyLinkedList other = (SinglyLinkedList) obj;    // use nonparameterized type
+        if (size != other.size) {
+            return false;
+        }
+        SNode walkA = head;
+        SNode walkB = other.head;
+        while (walkA != null) {
+            if (!walkA.getElement().equals(walkB.getElement())) {
+                return false;
+            }
+            walkA = walkA.getNext();
+            walkB = walkA.getNext();
+        }
+        return true;
+    }
 }
