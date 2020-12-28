@@ -1,8 +1,10 @@
 package chapter03;
 
+import java.util.Arrays;
+
 public class CircularlyLinkedList<E> {
     // Don't need a head, because head = tail.getNext()
-    private Node<E> tail = null;
+    private SNode<E> tail = null;
     private int size = 0;
 
     public CircularlyLinkedList() {
@@ -38,11 +40,11 @@ public class CircularlyLinkedList<E> {
 
     public void addFirst(E element) {
         if (isEmpty()) {
-            tail = new Node<>(element, null);
+            tail = new SNode<>(element, null);
             tail.setNext(tail);
         } else {
-            Node<E> node = new Node<>(element, tail.getNext());
-            tail.setNext(node);
+            SNode<E> SNode = new SNode<>(element, tail.getNext());
+            tail.setNext(SNode);
         }
         size++;
     }

@@ -2,8 +2,8 @@ package chapter03;
 
 public class SinglyLinkedList<E> {
 
-    private Node<E> head = null;
-    private Node<E> tail = null;
+    private SNode<E> head = null;
+    private SNode<E> tail = null;
     private int size = 0;
 
     public SinglyLinkedList() {
@@ -32,7 +32,7 @@ public class SinglyLinkedList<E> {
     }
 
     public void addFirst(E element) {
-        head = new Node<E>(element, head.getNext());
+        head = new SNode<E>(element, head.getNext());
         if (isEmpty()) {
             tail = head;
         }
@@ -40,13 +40,13 @@ public class SinglyLinkedList<E> {
     }
 
     public void addLast(E element) {
-        Node<E> node = new Node<E>(element, null);
+        SNode<E> SNode = new SNode<E>(element, null);
         if (isEmpty()) {
-            head = node;
+            head = SNode;
         } else {
-            tail.setNext(node);
+            tail.setNext(SNode);
         }
-        tail = node;
+        tail = SNode;
         size++;
     }
 

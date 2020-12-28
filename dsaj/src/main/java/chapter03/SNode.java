@@ -1,10 +1,10 @@
 package chapter03;
 
-class Node<E> {
+class SNode<E> {
     private E element;
-    private Node<E> next;
+    private SNode<E> next;
 
-    public Node(E element, Node<E> next) {
+    public SNode(E element, SNode<E> next) {
         this.element = element;
         this.next = next;
     }
@@ -13,11 +13,11 @@ class Node<E> {
         return element;
     }
 
-    public Node<E> getNext() {
+    public SNode<E> getNext() {
         return next;
     }
 
-    public void setNext(Node<E> next) {
+    public void setNext(SNode<E> next) {
         this.next = next;
     }
 }
