@@ -1,6 +1,6 @@
 package chapter03;
 
-public class SinglyLinkedList<E> {
+public class SinglyLinkedList<E> implements Cloneable{
 
     private SNode<E> head = null;
     private SNode<E> tail = null;
@@ -96,5 +96,23 @@ public class SinglyLinkedList<E> {
             walkB = walkA.getNext();
         }
         return true;
+    }
+
+    @Override
+    protected SinglyLinkedList<E> clone() throws CloneNotSupportedException {
+        // always use inherited Object.clone() to create the initial copy.
+        SinglyLinkedList<E> other = (SinglyLinkedList<E>) super.clone();
+        if (size > 0) {
+            other.head = new SNode<>(head.getElement(), null);
+            SNode<E> walk = head.getNext();
+            SNode<E> otherTail = other.head;
+            while (walk != null) {
+                SNode<E> node = new SNode<>(walk.getElement(), null);
+                otherTail.setNext(node);
+                otherTail = node;
+                walk = walk.getNext();
+            }
+        }
+        return other;
     }
 }
