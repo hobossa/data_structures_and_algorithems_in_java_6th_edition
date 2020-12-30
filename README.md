@@ -3,7 +3,7 @@ Data Structures and Algorithms in Java 6th Edition
 
 ----
 - src ./dsaj (IntelliJ gradle project)
-- page 154/172
+- page 164/182
 
 
 ---
@@ -11,3 +11,5 @@ Data Structures and Algorithms in Java 6th Edition
     - Arrays::deepEquals
     - Arrays::deepHashCode
     - Arrays::deepToString
+    
+- chapter 4 : basic maths for algorithm 
