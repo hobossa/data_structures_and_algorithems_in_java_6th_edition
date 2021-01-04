@@ -7,7 +7,7 @@ Data Structures and Algorithms in Java 6th Edition
 
 
 ---
-- page 139, Can you tell the difference Arrays::equals and Arrays::DeepEquals? How about other Arrays::deepXXX  
+- page 139, Can you tell the difference between Arrays::equals and Arrays::DeepEquals? How about other Arrays::deepXXXs  
     - Arrays::deepEquals
     - Arrays::deepHashCode
     - Arrays::deepToString
