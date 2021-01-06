@@ -11,5 +11,6 @@ public class FibonacciTest {
     public void fibonacci() {
         Assert.assertEquals(8, Fibonacci.fibonacci(6));
         Assert.assertEquals(8, Fibonacci.fibonacciOpt(6));
+        Assert.assertEquals(8, Fibonacci.fibonacciTailRecursion(6));
     }
 }
