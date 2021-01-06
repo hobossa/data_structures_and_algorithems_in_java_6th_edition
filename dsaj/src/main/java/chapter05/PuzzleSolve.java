@@ -1,31 +1,34 @@
 package chapter05;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PuzzleSolve {
-    public static void puzzleSolve(int k, List<Character> s, Set<Character> u) {
-        if (k <= 0) {
+    public static void puzzleSolve(int k, LinkedHashSet<Character> s, Set<Character> u) {
+        if (k < 0) {
             return;
         }
-        System.out.println(String.valueOf(k) + " " + s.toString() + " " + u.toString());
+        if (k == 0) {
+            System.out.println(s.toString());
+        }
+
         for (Character c : u) {
-            List<Character> ss = new LinkedList<>(s);
-            ss.add(c);
-            Set<Character> uu = new HashSet<>(u);
-            uu.remove(c);
-            puzzleSolve(k-1, ss, uu);
+            if (s.contains(c)) {
+                continue;
+            }
+            s.add(c);
+            puzzleSolve(k-1, s, u);
+            s.remove(c);
         }
     }
 
     public static void main(String[] args) {
-        List<Character> s = new LinkedList<>();
+
+        LinkedHashSet<Character> s = new LinkedHashSet<>();
         Set<Character> u = new HashSet<>();
         u.add('a');
         u.add('b');
         u.add('c');
+        u.add('d');
         puzzleSolve(3, s, u);
     }
 }
