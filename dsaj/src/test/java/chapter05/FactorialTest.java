@@ -10,5 +10,6 @@ public class FactorialTest {
     @Test
     public void factorial() {
         Assert.assertEquals(120, Factorial.factorial(5));
+        Assert.assertEquals(120, Factorial.factorialTailRecursion(5));
     }
 }

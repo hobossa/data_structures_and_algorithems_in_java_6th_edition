@@ -10,4 +10,19 @@ public class Factorial {
             return n * factorial(n - 1);
         }
     }
+
+    private static int _factorialTailRecursion(int n,int acc) // tail recursion call
+    {
+        if(n==0)
+            return acc;
+        else
+            return _factorialTailRecursion(n-1,acc*n);
+    }
+
+    public static int factorialTailRecursion(int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException("Argument must be non negative");
+        }
+        return _factorialTailRecursion(n, 1);
+    }
 }
