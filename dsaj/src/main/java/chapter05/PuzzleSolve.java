@@ -29,6 +29,7 @@ public class PuzzleSolve {
         u.add('b');
         u.add('c');
         u.add('d');
+        // this will output the permutation of 3 characters out of "abcd";
         puzzleSolve(3, s, u);
     }
 }
