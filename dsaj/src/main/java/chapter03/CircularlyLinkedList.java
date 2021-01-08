@@ -1,7 +1,5 @@
 package chapter03;
 
-import java.util.Arrays;
-
 public class CircularlyLinkedList<E> {
     // Don't need a head, because head = tail.getNext()
     private SNode<E> tail = null;
