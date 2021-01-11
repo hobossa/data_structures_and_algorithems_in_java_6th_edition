@@ -1,6 +1,40 @@
 package chapter07;
 
-public class ArrayList<E> implements List<E> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class ArrayList<E> implements List<E>, Iterable<E> {
+    // -------- nested ArrayIterator class --------
+    private class ArrayIterator implements Iterator<E> {
+        private int j = 0;
+        private boolean removable = false;
+
+        @Override
+        public boolean hasNext() {
+            return j < size;        // size if field of outer instance.
+            // as a inner class ArrayList has access to fields of outer instance.
+        }
+
+        @Override
+        public E next() throws NoSuchElementException {
+            if (j == size) {
+                throw new NoSuchElementException("No next element");
+            }
+            removable = true;
+            return data[j++];
+        }
+
+        @Override
+        public void remove() throws IllegalStateException{
+            if (!removable) {
+                throw new IllegalStateException("nothing to remove");
+            }
+            ArrayList.this.remove(j-1);
+            j--;
+            removable = false;
+        }
+    } // -------- end of nested ArrayIterator class --------
+
     public static final int CAPACITY = 32;
     private E[] data;
     private int size = 0;
@@ -60,6 +94,10 @@ public class ArrayList<E> implements List<E> {
         data[size - 1] = null;
         size--;
         return e;
+    }
+
+    public Iterator<E> iterator() {
+        return new ArrayIterator();
     }
 
     protected void checkIndex(int i, int n) throws IndexOutOfBoundsException {

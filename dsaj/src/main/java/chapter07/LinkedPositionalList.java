@@ -1,6 +1,10 @@
 package chapter07;
 
-public class LinkedPositionalList<E> implements PositionalList<E> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class LinkedPositionalList<E> implements PositionalList<E>, Iterable<E> {
+
     //-------- nested Node class --------
     private static class Node<E> implements Position<E> {
         private E element;
@@ -41,6 +45,65 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
             this.next = next;
         }
     }   // -------- end of nested Node class --------
+
+    // --------- nested PositionIterator class --------
+    private class PositionIterator implements Iterator<Position<E>> {
+        private Position<E> cursor = first();   // position of the next element to report
+        private Position<E> recent = null;      // position of las reported element
+
+        @Override
+        public boolean hasNext() {
+            return cursor != null;
+        }
+
+        @Override
+        public Position<E> next() throws NoSuchElementException {
+            if (cursor == null) {
+                throw new NoSuchElementException("nothing left");
+            }
+            recent = cursor;
+            cursor = after(cursor);
+            return recent;
+        }
+
+        @Override
+        public void remove() throws IllegalStateException{
+            if (recent == null) {
+                throw new IllegalStateException("nothing to remove");
+            }
+            LinkedPositionalList.this.remove(recent);
+            recent = null;      // do not allow remove again until next is called
+        }
+    }   // -------- end of nested PositionIterator class --------
+
+    // -------- nested PositionIterable class --------
+    private class PositionIterable implements Iterable<Position<E>> {
+
+        @Override
+        public Iterator<Position<E>> iterator() {
+            return new PositionIterator();
+        }
+    }   // -------- end of nested PositionIterable class --------
+
+    // -------- nested ElementIterator class --------
+    private class ElementIterator implements Iterator<E> {
+        Iterator<Position<E>> posIterator = new PositionIterator();
+
+        @Override
+        public boolean hasNext() {
+            return posIterator.hasNext();
+        }
+
+        @Override
+        public E next() {
+            return posIterator.next().getElement();
+        }
+
+        @Override
+        public void remove() {
+            posIterator.remove();
+        }
+    }   // -------- end of nested ElementIteraotor class --------
 
     private Node<E> header;     // header sentinel
     private Node<E> trailer;    // trailer sentinel
@@ -129,6 +192,18 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
         node.setNext(null);         // add convention for defunct node
         node.setPrev(null);
         return answer;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new ElementIterator();
+    }
+
+    /**
+     * @return an iterable representation of the list's positions.
+     */
+    public Iterable<Position<E>> positions() {
+        return new PositionIterable();
     }
 
     /**
