@@ -1,6 +1,8 @@
 package chapter07;
 
-public interface List<E> {
+import java.util.Iterator;
+
+public interface List<E> extends Iterable<E> {
     int size();
 
     boolean isEmpty();
