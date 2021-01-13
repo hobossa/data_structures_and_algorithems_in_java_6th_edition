@@ -38,4 +38,30 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E> implements B
         }
         return snapshot;
     }
+
+    private void inorderSubtree(Position<E> p, List<Position<E>> snapshot) {
+        if (left(p) != null) {
+            inorderSubtree(left(p), snapshot);
+        }
+        snapshot.add(snapshot.size(), p);
+        if (right(p) != null) {
+            inorderSubtree(right(p), snapshot);
+        }
+    }
+
+    public Iterable<Position<E>> inorder() {
+        List<Position<E>> snapshot = new ArrayList<>(size());
+        if (!isEmpty()) {
+            inorderSubtree(root(), snapshot);
+        }
+        return snapshot;
+    }
+
+    /**
+     * Overrides positions to make inorder the default order for binary trees.
+     */
+    @Override
+    public Iterable<Position<E>> positions() {
+        return inorder();
+    }
 }
