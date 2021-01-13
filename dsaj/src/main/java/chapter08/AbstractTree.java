@@ -1,7 +1,10 @@
-package chapter07;
+package chapter08;
 
 import chapter06.LinkedQueue;
 import chapter06.Queue;
+import chapter07.ArrayList;
+import chapter07.List;
+import chapter07.Position;
 
 /**
  * An abstract base class providing some functionality of the Tree interface.

@@ -1,4 +1,8 @@
-package chapter07;
+package chapter08;
+
+import chapter07.ArrayList;
+import chapter07.List;
+import chapter07.Position;
 
 public abstract class AbstractBinaryTree<E> extends AbstractTree<E> implements BinaryTree<E> {
 

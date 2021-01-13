@@ -1,4 +1,6 @@
-package chapter07;
+package chapter08;
+
+import chapter07.Position;
 
 import java.util.Iterator;
 

@@ -1,4 +1,6 @@
-package chapter07;
+package chapter08;
+
+import chapter07.Position;
 
 public interface BinaryTree<E> extends Tree<E> {
     Position<E> left(Position<E> p) throws IllegalArgumentException;
