@@ -64,4 +64,18 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E> implements B
     public Iterable<Position<E>> positions() {
         return inorder();
     }
+
+    public static <E> int layout(BinaryTree<E> T, Position<E> p, int d, int x) {
+        if (T.left(p) != null) {
+            x = layout(T, T.left(p), d+1, x);
+        }
+        // p.getElement().setX(x++);   // post-increment x
+        // p.getElement().setY(d);
+        x++;
+        // the coordiantes of p.getElement() is (x, p)
+        if(T.right(p) != null) {
+                x = layout(T, T.right(p), d+1, x);
+        }
+        return  x;
+    }
 }

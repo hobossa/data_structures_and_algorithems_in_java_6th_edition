@@ -130,4 +130,20 @@ public abstract class AbstractTree<E> implements Tree<E> {
         }
         path.remove(d);     // restore path to its incoming state
     }
+
+    /**
+     * Prints parenthesized representation of subtree of T rotted at p.
+     */
+    public static <E> void parenthesize(Tree<E> T, Position<E> p) {
+        System.out.print(p.getElement());
+        if (T.isInternal(p)) {
+            boolean firstTime = true;
+            for (Position<E> c : T.children(p)) {
+                System.out.print((firstTime ? " (" : ", "));
+                firstTime = false;
+                parenthesize(T, c);
+            }
+            System.out.print(") ");
+        }
+    }
 }
