@@ -36,10 +36,28 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
         return right(i) < size();
     }
 
-    protected void swap(int i , int j) {
+    protected void swap(int i, int j) {
         Entry<K, V> temp = heap.get(i);
         heap.set(i, heap.get(j));
         heap.set(j, temp);
+    }
+
+    public HeapPriorityQueue(K[] keys, V[] values) {
+        super();
+        for (int i = 0; i < Math.min(keys.length, values.length); i++) {
+            heap.add(heap.size(), new PQEntry<>(keys[i], values[i]));
+        }
+        heapify();
+    }
+
+    /**
+     * Performs a bottom-up construction of the heap in linear time
+     */
+    protected void heapify() {
+        int startindex = parent(size() - 1); // start at the parent of the last entry.
+        for (int i = startindex; i >= 0; i--) {
+            downHeap(i);
+        }
     }
 
     /**
@@ -69,7 +87,7 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
                     smallChildIndex = rightIndex;
                 }
             }
-            if (compare(heap.get(smallChildIndex), heap.get(i))>=0) {
+            if (compare(heap.get(smallChildIndex), heap.get(i)) >= 0) {
                 break;
             }
             swap(i, smallChildIndex);
@@ -85,15 +103,15 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
     @Override
     public Entry<K, V> insert(K key, V value) throws IllegalArgumentException {
         checkKey(key);
-        Entry<K,V> newest = new PQEntry<>(key, value);
+        Entry<K, V> newest = new PQEntry<>(key, value);
         heap.add(heap.size(), newest);
-        upHeap(size()-1);
+        upHeap(size() - 1);
         return newest;
     }
 
     @Override
     public Entry<K, V> min() {
-        if (heap.isEmpty()){
+        if (heap.isEmpty()) {
             return null;
         }
         return heap.get(0);
@@ -101,12 +119,12 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 
     @Override
     public Entry<K, V> removeMin() {
-        if (heap.isEmpty()){
+        if (heap.isEmpty()) {
             return null;
         }
-        Entry<K,V> answer = heap.get(0);
-        swap(0, size()-1);
-        heap.remove(size()-1);
+        Entry<K, V> answer = heap.get(0);
+        swap(0, size() - 1);
+        heap.remove(size() - 1);
         downHeap(0);
         return answer;
     }
