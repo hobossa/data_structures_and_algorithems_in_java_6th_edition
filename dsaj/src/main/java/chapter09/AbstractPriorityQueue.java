@@ -24,11 +24,11 @@ public abstract class AbstractPriorityQueue<K, V> implements PriorityQueue<K, V>
             return v;
         }
 
-        protected void setK(K k) {
+        protected void setKey(K k) {
             this.k = k;
         }
 
-        protected void setV(V v) {
+        protected void setValue(V v) {
             this.v = v;
         }
     } // -------- end of nested PQEntry class --------
