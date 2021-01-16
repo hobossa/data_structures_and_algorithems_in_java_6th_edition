@@ -1,48 +1,46 @@
 package chapter10;
 
+import chapter09.DefaulterComparator;
 import chapter09.Entry;
 
-public abstract class AbstractSortedMap<K, V> extends AbstractMap<K, V> {
+import java.util.Comparator;
+
+public abstract class AbstractSortedMap<K, V>
+        extends AbstractMap<K, V> implements SortedMap<K, V> {
+    private Comparator<K> comp;
+
+    protected AbstractSortedMap(Comparator<K> comp) {
+        this.comp = comp;
+    }
+
+    protected AbstractSortedMap() {
+        this(new DefaulterComparator<K>());
+    }
+
+    protected int compare(Entry<K, V> a, Entry<K, V> b) {
+        return comp.compare(a.getKey(), b.getKey());
+    }
+
+    protected int compare(K a, Entry<K, V> b) {
+        return comp.compare(a, b.getKey());
+    }
+
+    protected int compare(Entry<K,V>a, K b){
+        return comp.compare(a.getKey(), b);
+    }
+
+    protected int compare(K a, K b) {
+        return comp.compare(a, b);
+    }
 
     /**
-     * Returns the entry with smallest key Value
-     * (or null, if the map is empty).
+     * Determines whether a key is valid.
      */
-    public abstract Entry<K, V> firstEntry();
-
-    /**
-     * Returns the entry with largest key value
-     * (or null, if the map is empty)l
-     */
-    public abstract Entry<K, V> lastEntry();
-
-    /**
-     * Returns the entry with the least key value greater than or equal to k
-     * (or null, if no such entry exists).
-     */
-    public abstract Entry<K, V> ceilingEntry(K key);
-
-    /**
-     * Returns the entry with the greatest key value less than or equal to k
-     * (or null, if no such entry exists).
-     */
-    public abstract Entry<K, V> floorEntry(K key);
-
-    /**
-     * Returns the entry with the greatest key value strictly less than k
-     * (or null, if no such entry exists).
-     */
-    public abstract Entry<K, V> lowerEntry(K key);
-
-    /**
-     * Returns the entry with the least key value strictly greater than k
-     * (or null, if no such entry exists).
-     */
-    public abstract Entry<K, V> higherEntry(K key);
-
-    /**
-     * Returns an iteration of all entries with key greater than or equal to k1,
-     * and strictly less than k2.
-     */
-    public abstract Iterable<Entry<K, V>> subMap(K fromKey, K toKey);
+    protected boolean checkKey(K key) throws IllegalArgumentException {
+        try {
+            return (comp.compare(key, key) == 0);   // see if key can be compared to itself.
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException("Incompatible key");
+        }
+    }
 }
