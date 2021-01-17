@@ -25,7 +25,7 @@ public abstract class AbstractSortedMap<K, V>
         return comp.compare(a, b.getKey());
     }
 
-    protected int compare(Entry<K,V>a, K b){
+    protected int compare(Entry<K, V> a, K b) {
         return comp.compare(a.getKey(), b);
     }
 
