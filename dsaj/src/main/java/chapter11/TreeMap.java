@@ -30,6 +30,15 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
             }
         } // -------- end of nested BSTNode class -------
 
+        // positional-based methods related to aux field
+        public int getAux(Position<Entry<K, V>> p) {
+            return ((BSTNode<Entry<K, V>>) p).getAux();
+        }
+
+        public void setAux(Position<Entry<K, V>> p, int value) {
+            ((BSTNode<Entry<K, V>>) p).setAux(value);
+        }
+
         @Override
         protected Node<Entry<K, V>> createNode(Entry<K, V> kvEntry, Node<Entry<K, V>> parent,
                                                Node<Entry<K, V>> left, Node<Entry<K, V>> right) {
@@ -188,9 +197,9 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
 
     @Override
     public Iterable<Entry<K, V>> entrySet() {
-        ArrayList<Entry<K,V>> buffer = new ArrayList<>(size());
-        for (Position<Entry<K,V>> p : tree.inorder()) {
-            if (isInternal(p)){
+        ArrayList<Entry<K, V>> buffer = new ArrayList<>(size());
+        for (Position<Entry<K, V>> p : tree.inorder()) {
+            if (isInternal(p)) {
                 buffer.add(buffer.size(), p.getElement());
             }
         }
@@ -216,29 +225,28 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
     @Override
     public Entry<K, V> ceilingEntry(K key) throws IllegalArgumentException {
         checkKey(key);                  // may throw IllegalArgumentException
-        Position<Entry<K,V>> p = treeSearch(root(), key);
+        Position<Entry<K, V>> p = treeSearch(root(), key);
         if (isInternal(p)) {
             return p.getElement();      // exact match
         }
         while (!isRoot(p)) {
-            if (p == left(parent(p))){
+            if (p == left(parent(p))) {
                 return parent(p).getElement();  // parent has next greater key;
-            }
-            else {
+            } else {
                 p = parent(p);
             }
         }
-        return  null;               // no such ceiling exists;
+        return null;               // no such ceiling exists;
     }
 
     @Override
     public Entry<K, V> floorEntry(K key) throws IllegalArgumentException {
         checkKey(key);                  // may throw IllegalArgumentException
-        Position<Entry<K,V>> p = treeSearch(root(), key);
+        Position<Entry<K, V>> p = treeSearch(root(), key);
         if (isInternal(p)) {
             return p.getElement();      // exact match
         }
-        while (!isRoot(p)){
+        while (!isRoot(p)) {
             if (p == right((parent(p)))) {
                 return parent(p).getElement();  // parent has nex lesser key
             } else {
@@ -251,7 +259,7 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
     @Override
     public Entry<K, V> lowerEntry(K key) throws IllegalArgumentException {
         checkKey(key);
-        Position<Entry<K,V>> p = treeSearch(root(), key);
+        Position<Entry<K, V>> p = treeSearch(root(), key);
         if (isInternal(p) && isInternal(left(p))) {
             return treeMax(left(p)).getElement();   // this is the predecessor to p
         }
@@ -269,8 +277,8 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
     @Override
     public Entry<K, V> higherEntry(K key) throws IllegalArgumentException {
         checkKey(key);
-        Position<Entry<K,V>> p = treeSearch(root(), key);
-        if (isInternal(p) && isInternal(right(p))){
+        Position<Entry<K, V>> p = treeSearch(root(), key);
+        if (isInternal(p) && isInternal(right(p))) {
             return treeMax(right(p)).getElement();
         }
         while (!isRoot(p)) {
@@ -286,6 +294,7 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
     /**
      * Returns an iterable containing all entries with keys in the range from
      * <code>fromKey</code> inclusive to <code>toKey</code> exclusive.
+     *
      * @return iterable with keys in desired range
      * @throws IllegalArgumentException if <code>fromKey</code> or <code>toKey</code> is not compatible with the map
      */
@@ -293,7 +302,7 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
     public Iterable<Entry<K, V>> subMap(K fromKey, K toKey) throws IllegalArgumentException {
         checkKey(fromKey);
         checkKey(toKey);
-        ArrayList<Entry<K,V>> buffer = new ArrayList<>(size());
+        ArrayList<Entry<K, V>> buffer = new ArrayList<>(size());
         if (compare(fromKey, toKey) < 0) {
             subMapRecurse(fromKey, toKey, root(), buffer);
         }
@@ -304,8 +313,8 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
      * utility to fill subMap buffer recursively (while maintaining order)
      */
     private void subMapRecurse(K fromKey, K toKey,
-                               Position<Entry<K,V>> p, ArrayList<Entry<K,V>> buffer) {
-        if (isInternal(p)){
+                               Position<Entry<K, V>> p, ArrayList<Entry<K, V>> buffer) {
+        if (isInternal(p)) {
             if (compare(p.getElement(), fromKey) < 0) {
                 subMapRecurse(fromKey, toKey, right(p), buffer);
             } else {
