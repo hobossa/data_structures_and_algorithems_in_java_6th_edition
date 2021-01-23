@@ -52,12 +52,8 @@ public class MergeSort {
                 S.add(S2.remove());
             }
         }
-        if (!S1.isEmpty()) {
-            S.addAll(S1);
-        }
-        if (!S2.isEmpty()) {
-            S.addAll(S2);
-        }
+        S.addAll(S1);
+        S.addAll(S2);
     }
 
     public static <K> void mergeSort(Queue<K> S, Comparator<K> comp) {
