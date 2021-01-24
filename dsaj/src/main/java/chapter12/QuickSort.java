@@ -3,6 +3,7 @@ package chapter12;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class QuickSort {
     public static <K> void quickSort(List<K> S, Comparator<K> comp) {
@@ -61,13 +62,33 @@ public class QuickSort {
                 left++;
                 right--;
             }
-            // put pivot into its final place (currently marked by left index)
-            temp = S[left];
-            S[left] = S[b];     // pivot = S[b]
-            S[b] = temp;
-            // make recursive calls
-            quickSortInPlace(S, comp, a, left - 1);
-            quickSortInPlace(S, comp, left + 1, b);
+        }
+        // put pivot into its final place (currently marked by left index)
+        temp = S[left];
+        S[left] = S[b];     // pivot = S[b]
+        S[b] = temp;
+        // make recursive calls
+        quickSortInPlace(S, comp, a, left - 1);
+        quickSortInPlace(S, comp, left + 1, b);
+
+    }
+
+    public static <K> void quickSortInPlace(K[] S, Comparator<K> comp) {
+        quickSortInPlace(S, comp, 0, S.length - 1);
+    }
+
+    public static void main(String[] args) {
+        Random random = new Random();
+        int n = 10;
+        Integer[] S = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            S[i] = random.nextInt(1000);
+            System.out.print(S[i] + " ");
+        }
+        System.out.print("\n");
+        quickSortInPlace(S, Integer::compareTo);
+        for (Integer i : S) {
+            System.out.println(i);
         }
     }
 }
