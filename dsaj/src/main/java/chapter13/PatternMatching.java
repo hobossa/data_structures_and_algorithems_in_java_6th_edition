@@ -36,13 +36,16 @@ public class PatternMatching {
         // occurrence of c in the pattern.
         // Otherwise, we conventionally define last(c) = -1.
         Map<Character, Integer> last = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            last.put(text[i], -1);      // set -1 as default for all text characters.
-        }
+        // for (int i = 0; i < n; i++) {
+        //    last.put(text[i], -1);      // set -1 as default for all text characters.
+        // }
         for (int i = 0; i < m; i++) {
             last.put(pattern[i], i);    // rightmost occurrence in pattern is last
         }
-        
+        Function<Character, Integer> getLast = (Character c) -> {
+            Integer lN = last.get(c);
+            return (null == lN ? -1 : lN);
+        };
 
         int i = m - 1;      // an index into the text
         int k = m - 1;      // an index into the pattern
@@ -54,7 +57,7 @@ public class PatternMatching {
                 i--;
                 k--;
             } else {
-                i += m - Math.min(k, 1 + last.get(text[i]));
+                i += m - Math.min(k, 1 + getLast.apply(text[i]));
                 k = m - 1;
             }
         }
