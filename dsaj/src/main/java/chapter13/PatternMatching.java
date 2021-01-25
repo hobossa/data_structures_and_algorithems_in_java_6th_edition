@@ -74,22 +74,22 @@ public class PatternMatching {
             return 0;
         }
         int[] fail = computeFailKMP(pattern);
-        int j = 0;
-        int k = 0;
+        int j = 0;      // index into text
+        int k = 0;      // index into pattern
         while (j < n) {
-            if (text[j] == pattern[k]) {
-                if (k == m - 1) {
+            if (text[j] == pattern[k]) {    // pattern[0..k] matched thus far
+                if (k == m - 1) {           // match is complete
                     return j - m + 1;
                 }
-                j++;
+                j++;                        // otherwise, try to extend match
                 k++;
             } else if (k > 0) {
-                k = fail[k - 1];
+                k = fail[k - 1];            // reuse suffix of P[0..k-1]
             } else {
                 j++;
             }
         }
-        return -1;
+        return -1;                          // reached end without match
     }
 
     /**
