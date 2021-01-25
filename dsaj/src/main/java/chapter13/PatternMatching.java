@@ -63,4 +63,59 @@ public class PatternMatching {
         }
         return -1;
     }
+
+    /**
+     * Returns the lowest index at which substring pattern begins in text (or else -1)
+     */
+    public static int findKMP(char[] text, char[] pattern) {
+        int n = text.length;
+        int m = pattern.length;
+        if (m == 0) {
+            return 0;
+        }
+        int[] fail = computeFailKMP(pattern);
+        int j = 0;
+        int k = 0;
+        while (j < n) {
+            if (text[j] == pattern[k]) {
+                if (k == m - 1) {
+                    return j - m + 1;
+                }
+                j++;
+                k++;
+            } else if (k > 0) {
+                k = fail[k - 1];
+            } else {
+                j++;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * computeFailKMP is a "bootstrapping" process that compares the pattern
+     * to itself as in the KMP algorithm. Each time we have two characters
+     * that match, we set f(j)=k+1. Note that since we have j>k throughout
+     * the execution of the algorithm, f(k-1) is always well defined when we
+     * need to use it.
+     */
+    private static int[] computeFailKMP(char[] pattern) {
+        int m = pattern.length;
+        int[] fail = new int[m];    // by default, all overlaps are zero
+        int j = 1;
+        int k = 0;
+        while (j < m) { // compute fail[j] during this pass, if nonzero
+            if (pattern[j] == pattern[k]) { // k+1 characters match thus far
+                fail[j] = k + 1;
+                j++;
+                k++;
+            } else if (k > 0) {
+                k = fail[k - 1];  // k follows a matching prefix
+            } else {
+                j++;        // no match found starting at j
+            }
+        }
+        return fail;
+    }
 }
+
