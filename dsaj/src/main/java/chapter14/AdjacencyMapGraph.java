@@ -6,9 +6,10 @@ import chapter07.PositionalList;
 import chapter10.Map;
 import chapter10.ProbeHashMap;
 
-public class AdjacencyMapGraph<V,E> implements Graph<V, E> {
+public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
 
     // nested InnerVertex and InnerEdge classes defined here...
+
     /**
      * A vertex of an adjacency map graph representation.
      */
@@ -30,7 +31,7 @@ public class AdjacencyMapGraph<V,E> implements Graph<V, E> {
         /**
          * Validates that this vertex instance belongs to the given graph.
          */
-        public boolean validate(Graph<V,E> graph) {
+        public boolean validate(Graph<V, E> graph) {
             return (AdjacencyMapGraph.this == graph && pos != null);
         }
 
@@ -71,11 +72,13 @@ public class AdjacencyMapGraph<V,E> implements Graph<V, E> {
         @SuppressWarnings("unchecked")
         public InnerEdge(Vertex<V> u, Vertex<V> v, E element) {
             this.element = element;
-            endpoints = (Vertex<V>[])new Vertex[]{u,v}; // array of length 2
+            endpoints = (Vertex<V>[]) new Vertex[]{u, v}; // array of length 2
         }
 
-        /** Validates that this edge instance belongs to the given graph. */
-        public boolean validate(Graph<V,E> graph) {
+        /**
+         * Validates that this edge instance belongs to the given graph.
+         */
+        public boolean validate(Graph<V, E> graph) {
             return AdjacencyMapGraph.this == graph && pos != null;
         }
 
@@ -193,6 +196,7 @@ public class AdjacencyMapGraph<V,E> implements Graph<V, E> {
     public Vertex<V> insertVertex(V element) {
         InnerVertex<V> vert = new InnerVertex<>(element, isDirected);
         vert.setPosition(vertices.addLast(vert));
+        return vert;
     }
 
     @Override
@@ -204,6 +208,7 @@ public class AdjacencyMapGraph<V,E> implements Graph<V, E> {
             InnerVertex<V> dest = validate(v);
             origin.getOutgoing().put(v, edge);
             dest.getIncoming().put(u, edge);
+            return edge;
         } else {
             throw new IllegalArgumentException("Edge from u to v exists");
         }
@@ -211,15 +216,30 @@ public class AdjacencyMapGraph<V,E> implements Graph<V, E> {
 
     @Override
     public void removeVertex(Vertex<V> v) throws IllegalArgumentException {
-
+        InnerVertex<V> vert = validate(v);
+        // remove all incident edges form the graph
+        for (Edge<E> e : vert.getOutgoing().values()) {
+            removeEdge(e);
+        }
+        for (Edge<E> e : vert.getIncoming().values()) {
+            removeEdge(e);
+        }
+        // remove this vertex from the list of vertices
+        vertices.remove(vert.getPosition());
+        vert.setPosition(null);     // invalidates the vertex
     }
 
     @Override
     public void removeEdge(Edge<E> e) throws IllegalArgumentException {
-
+        InnerEdge<E> edge = validate(e);
+        // remove this edge from vertices' adjacencies
+        InnerVertex<V>[] vertices = (InnerVertex<V>[]) edge.getEndpoints();
+        vertices[0].getOutgoing().remove(vertices[1]);
+        vertices[1].getIncoming().remove(vertices[0]);
+        // remove this edge from the list of edges
+        edges.remove(edge.getPosition());
+        edge.setPosition(null);     // invalidates the edge;
     }
-
-
 
     @SuppressWarnings({"unchecked"})
     private InnerVertex<V> validate(Vertex<V> v) {
