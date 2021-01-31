@@ -125,8 +125,8 @@ public class GraphAlgorithms {
             for (Edge<E> e : g.outgoingEdges(u)) {
                 // consider all outgoing neighbors of u
                 Vertex<V> v = g.opposite(u, e);
-                inCount.put(v, inCount.get(v)-1);   // v has one less constraint with out u
-                if (inCount.get(v) == 0)    {
+                inCount.put(v, inCount.get(v) - 1);   // v has one less constraint with out u
+                if (inCount.get(v) == 0) {
                     ready.push(v);
                 }
             }
