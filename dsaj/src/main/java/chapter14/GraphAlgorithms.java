@@ -3,10 +3,9 @@ package chapter14;
 import chapter06.LinkedStack;
 import chapter06.Stack;
 import chapter07.LinkedPositionalList;
+import chapter07.Position;
 import chapter07.PositionalList;
-import chapter09.AdaptablePriorityQueue;
-import chapter09.Entry;
-import chapter09.HeapAdaptablePriorityQueue;
+import chapter09.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -222,6 +221,42 @@ public class GraphAlgorithms {
     }
 
     /**
-     * Minimum Spanning Trees
+     * Minimum Spanning Trees - Kruskal's algorithm
+     * A tree that contains every vertex of a connected graph G is said to be a
+     * spanning tree. A spanning tree with smallest total weight is known as the
+     * minimum spanning tree (or MST).
      */
+    public static <V> PositionalList<Edge<Integer>> MST(Graph<V, Integer> g) {
+        // tree is where we will store result as it is computed
+        PositionalList<Edge<Integer>> tree = new LinkedPositionalList<>();
+        // pq entries are edges of graph, with weights as keys
+        PriorityQueue<Integer, Edge<Integer>> pq = new HeapPriorityQueue<>();
+        // union-find forest of components of the graph
+        Partition<Vertex<V>> forest = new Partition<>();
+        // map each vertex to the forest position
+        Map<Vertex<V>, Position<Vertex<V>>> positions = new HashMap<>();
+
+        for (Vertex<V> v : g.vertices()) {
+            positions.put(v, forest.makeCluster(v));
+        }
+
+        for (Edge<Integer> e : g.edges()) {
+            pq.insert(e.getElement(), e);
+        }
+
+        int size = g.numVertices();
+        // while tree not spanning and unprocessed edges remain...
+        while (tree.size() != size - 1 && !pq.isEmpty()) {
+            Entry<Integer, Edge<Integer>> entry = pq.removeMin();
+            Edge<Integer> edge = entry.getValue();
+            Vertex<V>[] endpoints = g.endVertices(edge);
+            Position<Vertex<V>> a = forest.find(positions.get(endpoints[0]));
+            Position<Vertex<V>> b = forest.find(positions.get(endpoints[1]));
+            if (a != b) {
+                tree.addLast(edge);
+                forest.union(a, b);
+            }
+        }
+        return tree;
+    }
 }
